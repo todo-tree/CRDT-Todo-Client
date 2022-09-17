@@ -1,5 +1,4 @@
 import React from "react";
-import { cleanTrash, restore } from "../db/task";
 
 const TrashItem = (props) => {
   const { task } = props;
@@ -10,11 +9,14 @@ const TrashItem = (props) => {
     <li>
       <span
         style={{ marginRight: 6, cursor: "pointer" }}
-        onClick={() => cleanTrash(task)}
+        onClick={() => console.log("cleanTrash", task)}
       >
         {"🗑️"}
       </span>
-      <span style={{ cursor: "pointer" }} onClick={() => restore(task)}>
+      <span
+        style={{ cursor: "pointer" }}
+        onClick={() => console.log("restore", task)}
+      >
         {"🔙"}{" "}
       </span>
       <span style={task.done ? { textDecoration: "line-through" } : {}}>

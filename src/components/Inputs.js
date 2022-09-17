@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { create } from "../db/task";
 
 const Inputs = () => {
   const [data, setData] = useState("");
@@ -16,14 +15,14 @@ const Inputs = () => {
         value={data}
         onKeyDown={(e) => {
           if (e.keyCode === 13) {
-            create(data);
+            console.log("create", data);
             setData("");
           }
         }}
       />
       <button
         onClick={() => {
-          create(data);
+          console.log("create", data);
           setData("");
         }}
       >
