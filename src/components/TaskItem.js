@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { moveTrashTaskCommand } from "../module/createLog";
 
 const TaskItem = (props) => {
   const { task } = props;
@@ -14,7 +15,7 @@ const TaskItem = (props) => {
     <li>
       <span
         style={{ marginRight: 6, cursor: "pointer" }}
-        onClick={() => console.log("moveTrash", task)}
+        onClick={() => console.log(moveTrashTaskCommand(task._id))}
       >
         {"🗑️"}
       </span>
