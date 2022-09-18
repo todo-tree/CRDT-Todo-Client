@@ -1,7 +1,15 @@
 import React, { useState } from "react";
+import { createTaskCommand } from "../module/createLog";
 
 const Inputs = () => {
   const [data, setData] = useState("");
+
+  const createTask = () => {
+    const command = createTaskCommand(data);
+    console.log(command);
+
+    setData("");
+  };
 
   return (
     <div>
@@ -15,19 +23,11 @@ const Inputs = () => {
         value={data}
         onKeyDown={(e) => {
           if (e.keyCode === 13) {
-            console.log("create", data);
-            setData("");
+            createTask();
           }
         }}
       />
-      <button
-        onClick={() => {
-          console.log("create", data);
-          setData("");
-        }}
-      >
-        Create
-      </button>
+      <button onClick={createTask}>Create</button>
     </div>
   );
 };
