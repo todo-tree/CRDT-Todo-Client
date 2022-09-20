@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { v4 } from "uuid";
 import db from "../db/db";
-import { createTaskCommand } from "../module/createLog";
+import { createTaskCommand } from "../module/commands";
 
 const Inputs = () => {
   const [data, setData] = useState("");

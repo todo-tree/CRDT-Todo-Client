@@ -3,7 +3,7 @@ import {
   moveTrashTaskCommand,
   toggleDoneTaskCommand,
   updateTaskCommand,
-} from "../module/createLog";
+} from "../module/commands";
 import db from "../db/db";
 import { v4 } from "uuid";
 

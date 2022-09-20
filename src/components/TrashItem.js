@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  deleteTaskCommand,
-  restoreTrashTaskCommand,
-} from "../module/createLog";
+import { deleteTaskCommand, restoreTrashTaskCommand } from "../module/commands";
 import { v4 } from "uuid";
 import db from "../db/db";
 
