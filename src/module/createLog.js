@@ -25,18 +25,20 @@ export const toggleDoneTaskCommand = (task_id, done) => {
 };
 
 export const moveTrashTaskCommand = (task_id) => {
-  let command = { op: "", p: [], ou: [] };
+  let command = { op: "", p: [], ou: [], updatedAt: 0 };
   command.op = "update";
   command.p.push(task_id, "_deleted");
   command.ou.push(false, true);
+  command.updatedAt = Date.now();
   return command;
 };
 
 export const restoreTrashTaskCommand = (task_id) => {
-  let command = { op: "", p: [], ou: [] };
+  let command = { op: "", p: [], ou: [], updatedAt: 0 };
   command.op = "update";
   command.p.push(task_id, "_deleted");
   command.ou.push(true, false);
+  command.updatedAt = Date.now();
   return command;
 };
 

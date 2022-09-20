@@ -33,15 +33,15 @@ const App = () => {
       } else if (val.command.op === "update") {
         let task = await db.tasks.get(val.command.p[0]);
         console.log(task[val.command.p[1]]);
-        task[val.command.p[1]] =
-          task[val.command.p[1]] === val.command.ou[0]
-            ? val.command.ou[1]
-            : task[val.command.p[1]];
-        db.tasks.update(val.command.p[0], task);
-        db.sync.update(val._syncId, {
-          ...val,
-          _applied: 1,
-        });
+        if (task[val.command.p[1]] === val.command.ou[0]) {
+          task[val.command.p[1]] = val.command.ou[1];
+          task._updatedAt = val.command.updatedAt;
+          db.tasks.update(val.command.p[0], task);
+          db.sync.update(val._syncId, {
+            ...val,
+            _applied: 1,
+          });
+        }
       }
     });
   }, [sync]);
