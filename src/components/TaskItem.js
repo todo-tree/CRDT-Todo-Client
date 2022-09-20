@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   moveTrashTaskCommand,
   toggleDoneTaskCommand,
+  updateTaskCommand,
 } from "../module/createLog";
 import db from "../db/db";
 import { v4 } from "uuid";
@@ -22,6 +23,11 @@ const TaskItem = (props) => {
 
   const moveTrashTask = () => {
     const command = moveTrashTaskCommand(task._id);
+    db.sync.put({ _syncId: v4(), command: command, _applied: 0, _synced: 0 });
+  };
+
+  const updateTask = () => {
+    const command = updateTaskCommand(task._id, "title", task.title, title);
     db.sync.put({ _syncId: v4(), command: command, _applied: 0, _synced: 0 });
   };
 
@@ -63,7 +69,7 @@ const TaskItem = (props) => {
             onKeyDown={(e) => {
               if (e.keyCode === 13) {
                 if (!(title.trim() === "")) {
-                  console.log("update", task._id, title);
+                  updateTask();
                 }
                 setEditing(false);
               }
@@ -82,7 +88,7 @@ const TaskItem = (props) => {
             style={{ display: "inline" }}
             onClick={() => {
               if (!(title.trim() === "")) {
-                console.log("update", task._id, title);
+                updateTask();
               }
               setEditing(false);
             }}
