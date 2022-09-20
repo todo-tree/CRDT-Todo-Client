@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import db from "./db/db";
 import Inputs from "./components/Inputs";
@@ -17,6 +17,34 @@ const App = () => {
     );
     return order.slice(-1) === "-" ? task.reverse().toArray() : task.toArray();
   }, [order]);
+
+  const sync = useLiveQuery(() => {
+    return db.sync.where("_applied").equals(0).toArray();
+  });
+
+  useEffect(() => {
+    sync?.map(async (val) => {
+      if (val.command.op === "create") {
+        db.tasks.put({ ...val.command.oi, _id: val.command.p[0] });
+        db.sync.update(val._syncId, {
+          ...val,
+          _applied: 1,
+        });
+      } else if (val.command.op === "update") {
+        let task = await db.tasks.get(val.command.p[0]);
+        console.log(task[val.command.p[1]]);
+        task[val.command.p[1]] =
+          task[val.command.p[1]] === val.command.ou[0]
+            ? val.command.ou[1]
+            : task[val.command.p[1]];
+        db.tasks.update(val.command.p[0], task);
+        db.sync.update(val._syncId, {
+          ...val,
+          _applied: 1,
+        });
+      }
+    });
+  }, [sync]);
 
   return (
     <div>

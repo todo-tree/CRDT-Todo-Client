@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { moveTrashTaskCommand } from "../module/createLog";
+import {
+  moveTrashTaskCommand,
+  toggleDoneTaskCommand,
+} from "../module/createLog";
+import db from "../db/db";
+import { v4 } from "uuid";
 
 const TaskItem = (props) => {
   const { task } = props;
@@ -9,6 +14,17 @@ const TaskItem = (props) => {
   useEffect(() => {
     setTitle(task.title);
   }, [task, editting]);
+
+  const toggleDoneTask = () => {
+    const command = toggleDoneTaskCommand(task._id, task.done);
+
+    db.sync.put({
+      _syncId: v4(),
+      command: command,
+      _applied: 0,
+      _synced: 0,
+    });
+  };
 
   if (task._deleted) return;
   return (
@@ -26,9 +42,7 @@ const TaskItem = (props) => {
         {"🖊️"}
       </span>
       <span
-        onClick={() => {
-          console.log("complate", task._id);
-        }}
+        onClick={toggleDoneTask}
         style={{
           cursor: "pointer",
         }}

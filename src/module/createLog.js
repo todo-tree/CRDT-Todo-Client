@@ -6,6 +6,7 @@ export const createTaskCommand = (title) => {
   command.p.push(v4());
   command.oi = {
     title: title,
+    done: false,
     _deleted: false,
     _createdAt: Date.now(),
     _updatedAt: Date.now(),
@@ -14,8 +15,13 @@ export const createTaskCommand = (title) => {
   return command;
 };
 
-export const update = (path, before, after) => {
-  return { op: "update", p: path, ou: [before, after] };
+export const toggleDoneTaskCommand = (task_id, done) => {
+  let command = { op: "", p: [], ou: [], updatedAt: 0 };
+  command.op = "update";
+  command.p.push(task_id, "done");
+  command.ou.push(done, !done);
+  command.updatedAt = Date.now();
+  return command;
 };
 
 export const moveTrashTaskCommand = (task_id) => {
@@ -23,7 +29,6 @@ export const moveTrashTaskCommand = (task_id) => {
   command.op = "update";
   command.p.push(task_id, "_deleted");
   command.ou.push(false, true);
-
   return command;
 };
 

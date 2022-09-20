@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 } from "uuid";
 import db from "../db/db";
 import { createTaskCommand } from "../module/createLog";
 
@@ -7,9 +8,13 @@ const Inputs = () => {
 
   const createTask = () => {
     const command = createTaskCommand(data);
-    console.log(command);
 
-    db.tasks.put({ ...command.oi, _id: command.p[0] });
+    db.sync.put({
+      _syncId: v4(),
+      command: command,
+      _applied: 0,
+      _synced: 0,
+    });
 
     setData("");
   };
