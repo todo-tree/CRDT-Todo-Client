@@ -1,5 +1,8 @@
 import React from "react";
-import { restoreTrashTaskCommand } from "../module/createLog";
+import {
+  deleteTaskCommand,
+  restoreTrashTaskCommand,
+} from "../module/createLog";
 import { v4 } from "uuid";
 import db from "../db/db";
 
@@ -13,12 +16,15 @@ const TrashItem = (props) => {
     db.sync.put({ _syncId: v4(), command: command, _applied: 0, _synced: 0 });
   };
 
+  const deleteTask = () => {
+    const command = deleteTaskCommand(task._id, task);
+    console.log(props);
+    db.sync.put({ _syncId: v4(), command: command, _applied: 0, _synced: 0 });
+  };
+
   return (
     <li>
-      <span
-        style={{ marginRight: 6, cursor: "pointer" }}
-        onClick={() => console.log("cleanTrash", task)}
-      >
+      <span style={{ marginRight: 6, cursor: "pointer" }} onClick={deleteTask}>
         {"🗑️"}
       </span>
       <span style={{ cursor: "pointer" }} onClick={restoreTrash}>

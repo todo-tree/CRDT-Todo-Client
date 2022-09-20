@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import _ from "lodash";
 import db from "./db/db";
 import Inputs from "./components/Inputs";
 import TaskItem from "./components/TaskItem";
@@ -37,6 +38,16 @@ const App = () => {
           task[val.command.p[1]] = val.command.ou[1];
           task._updatedAt = val.command.updatedAt;
           db.tasks.update(val.command.p[0], task);
+          db.sync.update(val._syncId, {
+            ...val,
+            _applied: 1,
+          });
+        }
+      } else if (val.command.op === "delete") {
+        let task = await db.tasks.get(val.command.p[0]);
+
+        if (_.isEqual(val.command.od, task)) {
+          db.tasks.delete(task._id);
           db.sync.update(val._syncId, {
             ...val,
             _applied: 1,

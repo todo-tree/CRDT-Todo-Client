@@ -51,6 +51,9 @@ export const updateTaskCommand = (task_id, item_name, before, after) => {
   return command;
 };
 
-export const del = (path, deleteTaskObject) => {
-  return { op: "delete", p: path, od: deleteTaskObject };
+export const deleteTaskCommand = (task_id, taskObject) => {
+  let command = { op: "", p: [], od: taskObject };
+  command.op = "delete";
+  command.p.push(task_id);
+  return command;
 };
