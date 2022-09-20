@@ -17,13 +17,12 @@ const TaskItem = (props) => {
 
   const toggleDoneTask = () => {
     const command = toggleDoneTaskCommand(task._id, task.done);
+    db.sync.put({ _syncId: v4(), command: command, _applied: 0, _synced: 0 });
+  };
 
-    db.sync.put({
-      _syncId: v4(),
-      command: command,
-      _applied: 0,
-      _synced: 0,
-    });
+  const moveTrashTask = () => {
+    const command = moveTrashTaskCommand(task._id);
+    db.sync.put({ _syncId: v4(), command: command, _applied: 0, _synced: 0 });
   };
 
   if (task._deleted) return;
@@ -31,7 +30,7 @@ const TaskItem = (props) => {
     <li>
       <span
         style={{ marginRight: 6, cursor: "pointer" }}
-        onClick={() => console.log(moveTrashTaskCommand(task._id))}
+        onClick={moveTrashTask}
       >
         {"🗑️"}
       </span>

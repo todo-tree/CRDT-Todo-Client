@@ -32,6 +32,14 @@ export const moveTrashTaskCommand = (task_id) => {
   return command;
 };
 
+export const restoreTrashTaskCommand = (task_id) => {
+  let command = { op: "", p: [], ou: [] };
+  command.op = "update";
+  command.p.push(task_id, "_deleted");
+  command.ou.push(true, false);
+  return command;
+};
+
 export const del = (path, deleteTaskObject) => {
   return { op: "delete", p: path, od: deleteTaskObject };
 };
