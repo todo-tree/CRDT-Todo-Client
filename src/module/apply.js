@@ -32,6 +32,7 @@ export default (sync) => {
           db.tasks.delete(task._id);
           applied(val);
         }
+        break;
     }
   });
 };
